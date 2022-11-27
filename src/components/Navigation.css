@@ -1,0 +1,22 @@
+
+img {
+	margin: 10px;
+}
+
+
+.container {
+	display: flex; 
+	align-items: center;
+  	padding-top: 10px;
+  	padding-bottom: 10px;
+}
+
+li{ 
+	display:inline; 
+	margin: 10spx;
+
+/*	position:relative;*/
+/*	align-content: center;
+	align-items: center;
+	align-self: center;*/
+}
