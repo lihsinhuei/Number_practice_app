@@ -1,0 +1,48 @@
+
+
+.nomalContainer {
+	width: 80%;
+	margin: 0 auto;
+	display: block;
+	padding: 20px;
+}
+
+
+p {
+    text-align: center;
+}
+
+.center {
+  display: flex;
+  justify-content: center;
+}
+
+.mainButton{
+    /*border: 1.5px solid black;*/
+    display: inline-block;
+    /*width: 230px;*/
+    margin-bottom: 10px;
+    border-radius: 30px;
+    padding: 10px;
+    color: black;
+    text-decoration:none;
+    box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
+    border: none;
+    transition: all 0.3s ease 0s;
+
+}
+
+
+
+.mainButton:visited {
+    color: black;
+    text-decoration:none;
+}
+
+.mainButton:hover {
+  background-color: #4ea4ba;
+  box-shadow: 0px 15px 20px rgba(169, 211, 222,0.4);
+  color: #fff;
+  transform: translateY(-1px);
+}
+

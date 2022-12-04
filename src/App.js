@@ -14,6 +14,7 @@ class App extends React.Component{
 			route: "signIn", //signIn/signUp/home/logOut
 			isLogIn: false,
 			user:{ 
+				name:"",
 				ID: null,
 			}
 		}
