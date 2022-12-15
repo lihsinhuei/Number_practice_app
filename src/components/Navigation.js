@@ -5,9 +5,6 @@ import logo from './logo.png';
 
 const Navigation = (props)=>{
 
-		console.log(props.isLogIn);
-
-
 		if(!props.isLogIn){
 			return(
 				<nav className="navbar bg-light">
@@ -34,7 +31,7 @@ const Navigation = (props)=>{
 						    </a>
 					    </div>
 					    <ul className = "col-sm-2">
-							<li >username</li>
+							<li >{props.email }</li>
 							<li onClick={()=>props.onRouteChange("signOut")} >signout</li> 
 						</ul>       
 					</div>  

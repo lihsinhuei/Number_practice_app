@@ -5,7 +5,6 @@ import './Introduction.css';
 
 
 const Introduction = (props)=>{
-	console.log(props);
 
 	return(
 		<div className="nomalContainer">

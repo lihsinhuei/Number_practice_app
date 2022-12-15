@@ -13,10 +13,9 @@ class App extends React.Component{
 		this.state = {
 			route: "signIn", //signIn/signUp/home/logOut
 			isLogIn: false,
-			user:{ 
-				name:"",
-				ID: null,
-			}
+		    id: '',
+		    name: '',
+		    email: ''
 		}
 	}
 
@@ -32,20 +31,33 @@ class App extends React.Component{
 	}
 
 
+	loadUser =(signInEmail)=>{
+		this.setState({email:signInEmail});
+	}
+
+
 
 	render(){
 		return(
 			<>
-				<Navigation isLogIn={this.state.isLogIn} onRouteChange={this.onRouteChange} />
+				<Navigation 
+					isLogIn={this.state.isLogIn} 
+					onRouteChange={this.onRouteChange} 
+					email={this.state.email}
+				/>
 				{this.state.isLogIn 
 					? 
-					<Home route={this.state.route} isLogIn={this.state.isLogIn} /> 
+					<Home 
+						route={this.state.route} 
+						isLogIn={this.state.isLogIn} 
+						email={this.state.email}
+					/> 
 					: 
 					(this.state.route == "signIn" 
 						? 
-						<SignIn onRouteChange={this.onRouteChange}/> 
+						<SignIn onRouteChange={this.onRouteChange} loadUser={this.loadUser}/> 
 						: 
-						<SignUp onRouteChange={this.onRouteChange}/> 
+						<SignUp onRouteChange={this.onRouteChange} loadUser={this.loadUser}/> 
 					)
 				}
 		
