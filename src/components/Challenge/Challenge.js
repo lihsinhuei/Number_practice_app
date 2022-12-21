@@ -1,6 +1,12 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import "./Challenge.css";
+import MicRecorder from 'mic-recorder-to-mp3';
+
+
+//set the bit rate for the audio to be recorded to 128 bits
+const Mp3Recorder = new MicRecorder({ bitRate: 128 });
+		
 
 
 class Challenge extends React.Component {
@@ -12,10 +18,16 @@ class Challenge extends React.Component {
 			challenge_id:0, //grap from DB
 			questionArray:[], //store questions for this round
 			whichQuestion: 0, //0-9
-			isSkip: false //default false
+			isSkip: false, //default false
+			
+			//states of mic-recorder-to-mp3 
+			isRecording: false,
+			blobURL: '',
+			isBlocked: false,
 		}
 	}
 
+	
 
 	componentDidMount(){
 		// Create a new challenge
@@ -27,6 +39,22 @@ class Challenge extends React.Component {
 			this.state.questionArray.push(opt);
 		}
 		console.log(this.state.questionArray);
+
+
+		// check if the permission for the microphone is allowed in the browser.
+		navigator.getUserMedia({ audio: true },() => {
+		    console.log('Permission Granted');
+		    this.setState({ isBlocked: false });
+		    this.start();
+		  },
+			  () => {
+			    console.log('Permission Denied');
+			    this.setState({ isBlocked: true })
+			  },
+		);
+	}
+
+	componentDidUpdate(){
 
 	}
 
@@ -56,6 +84,7 @@ class Challenge extends React.Component {
 			this.props.onQuizeStatusChange("quizEnd");
 		}else{
 			this.setState({whichQuestion:this.state.whichQuestion+1})
+			this.start();
 		}
 
 	}
@@ -67,10 +96,77 @@ class Challenge extends React.Component {
 		this.props.onQuizeStatusChange("quizEnd");
 	}
 
+	//mic-recorder-to-mp3 audio recording 
+	start = () => {
+	if (this.state.isBlocked) {
+	  console.log('Permission Denied');
+	} else {
+	  Mp3Recorder
+	    .start()
+	    .then(() => {
+	      this.setState({ isRecording: true });
+	    }).catch((e) => console.error(e));
+	}
+	};
+
+	//mic-recorder-to-mp3 audio stop recording and then sending the answer. 
+	stop = () => {
+	Mp3Recorder
+	  .stop()
+	  .getMp3()
+	  .then(([buffer, blob]) => {
+
+	    const blobURL = URL.createObjectURL(blob)
+	   //
+		// fetch(
+		//     blobURL,
+		//     {
+		//         method: 'GET',
+		//         headers: { 'Accept': '*/*' }
+		//     }
+		// ).then(res => {
+		//     new Promise((resolve, reject) => {
+		//         const dest = fs.createWriteStream(`filename.mp3`);
+		//         res.body.pipe(dest);
+		//         res.body.on('end', () => resolve());
+		//         dest.on('error', reject);
+		//     })
+		// });
+	    // fetch("http://localhost:3000/record",{
+        //     method: 'post',
+        //     headers: {'Content-Type': 'text/plain'},
+        //     body: JSON.stringify({
+        //       url: blobURL
+        //     })
+        // })
+       	console.log("url : ",blobURL);
+	    // window.open(blobURL);
+	    
+	    
+	    // const bufferView = Buffer.from(buffer);
+
+  		// fs.writeFileSync('./foo', bufferView);
+
+	    // const reader = new FileReader();
+	    // reader.readAsArrayBuffer(blob);
+
+	  //
 
 
+
+
+	    this.setState({ blobURL, isRecording: false });
+
+
+	  }).catch((e) => console.log(e));
+	  
+
+	  this.sendAnswer();
+
+	};
 
 	render(){
+
 		if(this.state.questionArray.length == 0 ){
 			return(
 				<div>preparing the text....</div>
@@ -84,9 +180,36 @@ class Challenge extends React.Component {
 							<p>{this.state.questionArray[this.state.whichQuestion]}</p>
 						</div>
 						<img />
+
+						<p>Click the button to stop recording and send</p>
+						
+						{this.state.isRecording 
+							?  
+							<div className="center"><button 
+								onClick={()=> this.stop()}
+								className="recordButton Rec" 
+								id="recButton">
+							</button></div>
+							:
+							<div className="center"><button 
+								onClick={()=> this.start()}
+								className="recordButton notRec" 
+								id="recButton">
+							</button></div>
+						}
+
+{/*						<button onClick={this.start} disabled={this.state.isRecording}>
+						  Record
+						</button>
+						<button onClick={this.stop} disabled={!this.state.isRecording}>
+						  Stop
+						</button>
+						<audio src={this.state.blobURL} controls="controls" />*/}
+
+
+
 						<div className="center">
 							<button className=" mainButton" onClick={()=>this.skipAQuestion()}  type="skip">Skip</button>
-							<button className=" mainButton" onClick={()=>this.sendAnswer()}  type="send">Send</button>
 							<button className=" mainButton" onClick={()=>this.exitQuiz()}  type="send">Exit</button>
 						</div>
 					</>
