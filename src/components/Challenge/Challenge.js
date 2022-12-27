@@ -117,47 +117,19 @@ class Challenge extends React.Component {
 	  .then(([buffer, blob]) => {
 
 	    const blobURL = URL.createObjectURL(blob)
-	   //
-		// fetch(
-		//     blobURL,
-		//     {
-		//         method: 'GET',
-		//         headers: { 'Accept': '*/*' }
-		//     }
-		// ).then(res => {
-		//     new Promise((resolve, reject) => {
-		//         const dest = fs.createWriteStream(`filename.mp3`);
-		//         res.body.pipe(dest);
-		//         res.body.on('end', () => resolve());
-		//         dest.on('error', reject);
-		//     })
-		// });
-	    // fetch("http://localhost:3000/record",{
-        //     method: 'post',
-        //     headers: {'Content-Type': 'text/plain'},
-        //     body: JSON.stringify({
-        //       url: blobURL
-        //     })
-        // })
-       	console.log("url : ",blobURL);
-	    // window.open(blobURL);
-	    
-	    
-	    // const bufferView = Buffer.from(buffer);
 
-  		// fs.writeFileSync('./foo', bufferView);
+	    //using FormData to send the blob to server
+	     var fd = new FormData();
+	     fd.append("blob",blob,'logic.mp3');
 
-	    // const reader = new FileReader();
-	    // reader.readAsArrayBuffer(blob);
-
-	  //
-
-
-
+		fetch('http://localhost:3000/createAudio', {
+		    // headers: {'Content-Type': 'multipart/form-data; boundary=WebAppBoundary'},
+		    // while sending FormData object, the web AIP will automatically add the content-type as multipart/form-data. 
+		    method: "POST", 
+		    body: fd
+		});
 
 	    this.setState({ blobURL, isRecording: false });
-
-
 	  }).catch((e) => console.log(e));
 	  
 
