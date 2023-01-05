@@ -31,7 +31,7 @@ class Challenge extends React.Component {
 
 	componentDidMount(){
 		// Create a new challenge
-		this.setState({challenge_id : this.state.challenge_id++});
+		this.setState({challenge_id : this.state.challenge_id+1});
 
 		// Create 10 numbers for this challenge
 		for(let i=0 ; i<10 ; i++){
@@ -64,7 +64,7 @@ class Challenge extends React.Component {
 		this.setState({isSkip:true});
 		//TBD: insert a new record to DB
 
-		if(this.state.whichQuestion == 9){
+		if(this.state.whichQuestion === 9){
 			//end the quiz
 			this.props.onQuizeStatusChange("quizEnd");
 		}else{
@@ -79,7 +79,7 @@ class Challenge extends React.Component {
 		this.setState({isSkip:false});
 		//TBD: insert a new record to DB
 		
-		if(this.state.whichQuestion == 9){
+		if(this.state.whichQuestion === 9){
 			//end the quiz
 			this.props.onQuizeStatusChange("quizEnd");
 		}else{
@@ -139,7 +139,7 @@ class Challenge extends React.Component {
 
 	render(){
 
-		if(this.state.questionArray.length == 0 ){
+		if(this.state.questionArray.length === 0 ){
 			return(
 				<div>preparing the text....</div>
 			)

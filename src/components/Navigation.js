@@ -15,7 +15,7 @@ const Navigation = (props)=>{
 						    </a>
 					    </div>
 					    <ul className = "col-sm-2" >
-							<li onClick={()=>props.onRouteChange("signIn")} > sign inn</li>
+							<li onClick={()=>props.onRouteChange("signIn")} > sign in</li>
 							<li onClick={()=>props.onRouteChange("signUp")} > Sign up</li> 
 						</ul>  
 					</div>  
@@ -31,8 +31,8 @@ const Navigation = (props)=>{
 						    </a>
 					    </div>
 					    <ul className = "col-sm-2">
-							<li >{props.email }</li>
-							<li onClick={()=>props.onRouteChange("signOut")} >signout</li> 
+							<li >{props.username+""}</li>
+							<li onClick={()=>props.onRouteChange("signIn")} >signout</li> 
 						</ul>       
 					</div>  
 				</nav>

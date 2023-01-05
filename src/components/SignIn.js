@@ -7,10 +7,6 @@ class SignIn extends React.Component {
 
 	constructor(props) {
 	    super(props);
-	    this.state = {
-	      signInEmail: '',
-	      signInPassword: ''
-	    }
 	}
 
 	// onEmailChange = (event)=>{
@@ -26,8 +22,27 @@ class SignIn extends React.Component {
 	onSubmitSignIn = (event)=>{
 		// this.setState=({signInEmail:event.target.floatingEmail.value});
 		// this.setState=({signInPassword:event.target.floatingPassword.value});
-		this.props.onRouteChange("home");
-		this.props.loadUser(event.target.floatingEmail.value);
+
+		const email = event.target.email.value;
+		const password = event.target.password.value;
+		if(email!='' && password!=''){
+			fetch("http://localhost:3000/signin",{
+				headers:{'Content-Type': 'application/json'},
+				body:JSON.stringify({
+					email:email,
+					password:password
+				}),
+				method:'POST'
+			})
+			 .then(response => response.json())
+			 .then(user =>{
+			 	this.props.onRouteChange("home");
+				this.props.loadUser(user.user_id,user.username);
+			 })
+			 .catch(()=>console.log("Wrong email or password"))
+
+		}
+
 
 	}
 
@@ -41,7 +56,7 @@ class SignIn extends React.Component {
 				      <input 
 				      	// onChange={(event)=>this.onEmailChange(event)} 
 				      	type="email" className="form-control" 
-				      	id="floatingEmail" 
+				      	id="email" 
 				      	placeholder="name@example.com" 
 				      />
 				     <label htmlFor="floatingInput">Email address</label>
@@ -51,7 +66,7 @@ class SignIn extends React.Component {
 				      	// onChange={(event)=>this.onPasswordChange(event)} 
 				      	type="password" 
 				      	className="form-control" 
-				      	id="floatingPassword" 
+				      	id="password" 
 				      	placeholder="Password" 
 				      />
 				      <label htmlFor="floatingPassword">Password</label>

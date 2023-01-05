@@ -14,7 +14,7 @@ class App extends React.Component{
 			route: "signIn", //signIn/signUp/home/logOut
 			isLogIn: false,
 		    id: '',
-		    name: '',
+		    username: '',
 		    email: ''
 		}
 	}
@@ -24,15 +24,20 @@ class App extends React.Component{
 		if(change === 'home'){
 			//need to add user validation afterward
 			this.setState({isLogIn:true});
-		}else if(change === 'signOut'){
+		}else if(change === 'signIn'){
 			this.setState({isLogIn:false});
 		}
 		this.setState({route:change});
 	}
 
 
-	loadUser =(signInEmail)=>{
-		this.setState({email:signInEmail});
+
+
+	loadUser =(id,username)=>{
+		this.setState({
+			id:id,
+			username:username
+		});
 	}
 
 
@@ -43,7 +48,7 @@ class App extends React.Component{
 				<Navigation 
 					isLogIn={this.state.isLogIn} 
 					onRouteChange={this.onRouteChange} 
-					email={this.state.email}
+					username={this.state.username}
 				/>
 				{this.state.isLogIn 
 					? 
@@ -53,7 +58,7 @@ class App extends React.Component{
 						email={this.state.email}
 					/> 
 					: 
-					(this.state.route == "signIn" 
+					(this.state.route === "signIn" 
 						? 
 						<SignIn onRouteChange={this.onRouteChange} loadUser={this.loadUser}/> 
 						: 
