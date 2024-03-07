@@ -11,7 +11,6 @@ const Mp3Recorder = new MicRecorder({ bitRate: 128 });
 
 class Challenge extends React.Component {
 
-
 	constructor(props){
 		super(props);
 		this.state = {
@@ -70,8 +69,6 @@ class Challenge extends React.Component {
 		}else{
 			this.setState({whichQuestion:this.state.whichQuestion+1})
 		}
-
-
 	}
 
 	sendAnswer(){
@@ -120,9 +117,11 @@ class Challenge extends React.Component {
 
 	    //using FormData to send the blob to server
 	     var fd = new FormData();
-	     fd.append("blob",blob,'logic.mp3');
+		 const fileName = `${this.state.challenge_id}_${this.state.whichQuestion}.mp3` 
+		 console.log(fileName);
+	     fd.append("blob",blob, fileName);
 
-		fetch('http://localhost:3000/createAudio', {
+		fetch('http://localhost:3000/processUserRecording', {
 		    // headers: {'Content-Type': 'multipart/form-data; boundary=WebAppBoundary'},
 		    // while sending FormData object, the web AIP will automatically add the content-type as multipart/form-data. 
 		    method: "POST", 

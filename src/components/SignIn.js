@@ -1,5 +1,5 @@
 import React from 'react';
-import ReactDOM from 'react-dom/client';
+// import ReactDOM from 'react-dom/client';
 import './SignIn.css';
 
 
@@ -9,20 +9,8 @@ class SignIn extends React.Component {
 	    super(props);
 	}
 
-	// onEmailChange = (event)=>{
-	// 	this.setState({signInEmail : event.target.value})
-	// 	console.log(event.target.value);
-	// }
-
-	// onPasswordChange = (event) =>{
-	// 	this.setState({signInPassword : event.target.value})
-	// 	console.log(event.target.value);
-	// }
-
+	//fetch user data from DB, if valid, rerender to home page, if not,stay in the login page.
 	onSubmitSignIn = (event)=>{
-		// this.setState=({signInEmail:event.target.floatingEmail.value});
-		// this.setState=({signInPassword:event.target.floatingPassword.value});
-
 		const email = event.target.email.value;
 		const password = event.target.password.value;
 		if(email!='' && password!=''){
@@ -40,12 +28,10 @@ class SignIn extends React.Component {
 				this.props.loadUser(user.user_id,user.username);
 			 })
 			 .catch(()=>console.log("Wrong email or password"))
-
 		}
-
-
 	}
 
+	apl
 	render(){
 		return(
 			<div className="container">
@@ -54,7 +40,6 @@ class SignIn extends React.Component {
 				    <h1 className="h3 mb-3 fw-normal">Please sign in</h1>
 				    <div className="form-floating">
 				      <input 
-				      	// onChange={(event)=>this.onEmailChange(event)} 
 				      	type="email" className="form-control" 
 				      	id="email" 
 				      	placeholder="name@example.com" 
@@ -63,7 +48,6 @@ class SignIn extends React.Component {
 				    </div>
 				    <div className="form-floating">
 				      <input 
-				      	// onChange={(event)=>this.onPasswordChange(event)} 
 				      	type="password" 
 				      	className="form-control" 
 				      	id="password" 
@@ -83,8 +67,6 @@ class SignIn extends React.Component {
 			</div>
 		)
 	}
-
-
 	
 }
 
