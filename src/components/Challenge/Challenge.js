@@ -30,7 +30,20 @@ class Challenge extends React.Component {
 
 	componentDidMount(){
 		// Create a new challenge
-		this.setState({challenge_id : this.state.challenge_id+1});
+		fetch('http://localhost:3000/newChallenge',{
+			headers:{'Content-Type': 'application/json'},
+			body:JSON.stringify({
+					userID:this.props.userID,
+			}),
+			method: "POST"
+		})
+		.then(response=>response.json())
+		.then(data=>{
+			this.setState({challenge_id : data.challenge_id});
+		})
+		.catch(error=>{
+			console.log("failed to create a new challenge",error)
+		})
 
 		// Create 10 numbers for this challenge
 		for(let i=0 ; i<10 ; i++){
@@ -120,6 +133,10 @@ class Challenge extends React.Component {
 		 const fileName = `${this.props.userID}_${this.state.challenge_id}_${this.state.whichQuestion}.mp3` 
 		 console.log(fileName);
 	     fd.append("blob",blob, fileName);
+		 fd.append("challengeID",this.state.challenge_id);
+		 fd.append("questionNo",this.state.whichQuestion);
+		 fd.append("givenNumber",this.state.questionArray[this.state.whichQuestion]);
+		 fd.append("isSkip",this.state.isSkip);
 
 		fetch('http://localhost:3000/processUserRecording', {
 		    // headers: {'Content-Type': 'multipart/form-data; boundary=WebAppBoundary'},
@@ -129,9 +146,9 @@ class Challenge extends React.Component {
 		});
 
 	    this.setState({ blobURL, isRecording: false });
-	  }).catch((e) => console.log(e));
+	  })
+	  	.catch((e) => console.log(e));
 	  
-
 	  this.sendAnswer();
 
 	};

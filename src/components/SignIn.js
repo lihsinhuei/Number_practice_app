@@ -13,7 +13,7 @@ class SignIn extends React.Component {
 	onSubmitSignIn = (event)=>{
 
 		this.props.onRouteChange("home");//for testing 
-		this.props.loadUser("2","Hsin");//for testing 
+		this.props.loadUser(1,"Hsin");//for testing 
 
 		// const email = event.target.email.value;
 		// const password = event.target.password.value;
