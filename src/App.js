@@ -18,8 +18,8 @@ class App extends React.Component{
 		    email: ''
 		}
 	}
-
-
+	
+	//important function! it changes the state and trigger re-rendering. 
 	onRouteChange = (change)=>{
 		if(change === 'home'){
 			//need to add user validation afterward
@@ -31,15 +31,12 @@ class App extends React.Component{
 	}
 
 
-
-
 	loadUser =(id,username)=>{
 		this.setState({
 			id:id,
 			username:username
 		});
 	}
-
 
 
 	render(){
@@ -56,6 +53,7 @@ class App extends React.Component{
 						route={this.state.route} 
 						isLogIn={this.state.isLogIn} 
 						email={this.state.email}
+						userID={this.state.id}
 					/> 
 					: 
 					(this.state.route === "signIn" 

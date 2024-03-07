@@ -28,7 +28,7 @@ class Home extends React.Component{
 				{this.state.quizeStatus == "notStart" 
 					? <Introduction onQuizeStatusChange={this.onQuizeStatusChange}/> 
 					: (this.state.quizeStatus=="inProgress"
-						? <Challenge onQuizeStatusChange={this.onQuizeStatusChange}/> 
+						? <Challenge userID={this.props.userID} onQuizeStatusChange={this.onQuizeStatusChange}/> 
 						: <Result onQuizeStatusChange={this.onQuizeStatusChange}/>
 					   )
 				}

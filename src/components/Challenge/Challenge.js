@@ -117,7 +117,7 @@ class Challenge extends React.Component {
 
 	    //using FormData to send the blob to server
 	     var fd = new FormData();
-		 const fileName = `${this.state.challenge_id}_${this.state.whichQuestion}.mp3` 
+		 const fileName = `${this.props.userID}_${this.state.challenge_id}_${this.state.whichQuestion}.mp3` 
 		 console.log(fileName);
 	     fd.append("blob",blob, fileName);
 
