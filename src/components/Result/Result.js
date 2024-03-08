@@ -18,7 +18,6 @@ class Result extends React.Component{
 		//fetch records from DB
 		console.log("id:",this.props.theChallengeID);
 		fetch('http://localhost:3000/getRecord',{
-			// body:fd,
 			headers:{'Content-Type': 'application/json'},
 			body:JSON.stringify({
 				challengeID:this.props.theChallengeID
@@ -44,7 +43,7 @@ class Result extends React.Component{
 		}else{
 			const rows = [];
 			for (let i = 0; i < this.state.records.length; i++) {
-				rows.push(<TableRow record={this.state.records[i]} key={this.state.records[i].question_no}  />);
+				rows.push(<TableRow record={this.state.records[i]} key={this.state.records[i].question_no} blobURL={this.props.blobURLs[i]} />);
 			}
 			console.log(rows);
 			return(

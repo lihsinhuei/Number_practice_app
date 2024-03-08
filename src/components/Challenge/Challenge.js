@@ -6,8 +6,6 @@ import MicRecorder from 'mic-recorder-to-mp3';
 
 //set the bit rate for the audio to be recorded to 128 bits
 const Mp3Recorder = new MicRecorder({ bitRate: 128 });
-		
-
 
 class Challenge extends React.Component {
 
@@ -26,7 +24,7 @@ class Challenge extends React.Component {
 		}
 	}
 
-	
+	blobURLs=[];
 
 	componentDidMount(){
 		// Create a new challenge
@@ -109,6 +107,10 @@ class Challenge extends React.Component {
 		if(this.state.whichQuestion === 9){
 			//sending the callenge id to Result.js(sibling) through Home.js(parent)
 			this.props.searchRecords(this.state.challenge_id);
+			
+			//sending the audio urls to Result.js(sibling) through Home.js(parent)
+			this.props.saveBlobs(this.blobURLs);
+
 			//end the quiz
 			this.props.onQuizeStatusChange("quizEnd");
 		}else{
@@ -146,7 +148,10 @@ class Challenge extends React.Component {
 	  .then(([buffer, blob]) => {
 
 	    const blobURL = URL.createObjectURL(blob)
-
+		console.log("let's look at the bloburl:",blobURL);
+		//push to the array, and send it to the display page later.
+		this.blobURLs.push(blobURL);
+		console.log(this.blobURLs);
 	    //using FormData to send the blob to server
 	     var fd = new FormData();
 		 const fileName = `${this.props.userID}_${this.state.challenge_id}_${this.state.whichQuestion}.mp3` 

@@ -11,6 +11,7 @@ class Home extends React.Component{
 		this.state = {
 			quizeStatus:"notStart", //notStart(default) / inProgress/ quizEnd
 			userName:'',
+			blobURLs:[],
 			challengeIDForSearching:"" //will be passing to the Result.js component to search the records from DB
 		}
 	}
@@ -23,10 +24,16 @@ class Home extends React.Component{
 	}
 
 
+	saveBlobs = (audioURLs)=>{
+		this.setState({blobURLs:audioURLs});
+	}
+
 	//for Challenge.js to pass challengeID to Result.js. 
 	searchRecords =(id)=>{
 		this.setState({challengeIDForSearching:id});
 	}
+
+
 
 
 	render(){
@@ -36,8 +43,8 @@ class Home extends React.Component{
 				{this.state.quizeStatus == "notStart" 
 					? <Introduction onQuizeStatusChange={this.onQuizeStatusChange}/> 
 					: (this.state.quizeStatus=="inProgress"
-						? <Challenge userID={this.props.userID} onQuizeStatusChange={this.onQuizeStatusChange} searchRecords={this.searchRecords}/> 
-						: <Result theChallengeID={this.state.challengeIDForSearching} onQuizeStatusChange={this.onQuizeStatusChange}/>
+						? <Challenge userID={this.props.userID} onQuizeStatusChange={this.onQuizeStatusChange} saveBlobs={this.saveBlobs} searchRecords={this.searchRecords}/> 
+						: <Result theChallengeID={this.state.challengeIDForSearching} blobURLs={this.state.blobURLs} onQuizeStatusChange={this.onQuizeStatusChange} />
 					   )
 				}
 			</>
