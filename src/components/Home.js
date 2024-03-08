@@ -10,15 +10,23 @@ class Home extends React.Component{
 		super(props);
 		this.state = {
 			quizeStatus:"notStart", //notStart(default) / inProgress/ quizEnd
-			userName:""
+			userName:'',
+			challengeIDForSearching:"" //will be passing to the Result.js component to search the records from DB
 		}
 	}
+
+
 
 
 	onQuizeStatusChange = (status)=>{
 		this.setState({quizeStatus:status});
 	}
 
+
+	//for Challenge.js to pass challengeID to Result.js. 
+	searchRecords =(id)=>{
+		this.setState({challengeIDForSearching:id});
+	}
 
 
 	render(){
@@ -28,8 +36,8 @@ class Home extends React.Component{
 				{this.state.quizeStatus == "notStart" 
 					? <Introduction onQuizeStatusChange={this.onQuizeStatusChange}/> 
 					: (this.state.quizeStatus=="inProgress"
-						? <Challenge userID={this.props.userID} onQuizeStatusChange={this.onQuizeStatusChange}/> 
-						: <Result onQuizeStatusChange={this.onQuizeStatusChange}/>
+						? <Challenge userID={this.props.userID} onQuizeStatusChange={this.onQuizeStatusChange} searchRecords={this.searchRecords}/> 
+						: <Result theChallengeID={this.state.challengeIDForSearching} onQuizeStatusChange={this.onQuizeStatusChange}/>
 					   )
 				}
 			</>

@@ -74,12 +74,29 @@ class Challenge extends React.Component {
 	skipAQuestion(){
 		//TBD: stop recording 
 		this.setState({isSkip:true});
+
 		//TBD: insert a new record to DB
+		var fd = new FormData();
+		fd.append("challengeID",this.state.challenge_id);
+		fd.append("questionNo",this.state.whichQuestion);
+		fd.append("givenNumber",this.state.questionArray[this.state.whichQuestion]);
+
+		fetch('http://localhost:3000/skipQuestion',{
+			body:fd,
+			method: "POST"
+		})
+		.then(console.log("Skipped"))
+		.catch(error=>{
+			console.log("failed to skip the question",error)
+		})
+
+
 
 		if(this.state.whichQuestion === 9){
 			//end the quiz
 			this.props.onQuizeStatusChange("quizEnd");
 		}else{
+			this.setState({isSkip:false});
 			this.setState({whichQuestion:this.state.whichQuestion+1})
 		}
 	}
@@ -90,6 +107,8 @@ class Challenge extends React.Component {
 		//TBD: insert a new record to DB
 		
 		if(this.state.whichQuestion === 9){
+			//sending the callenge id to Result.js(sibling) through Home.js(parent)
+			this.props.searchRecords(this.state.challenge_id);
 			//end the quiz
 			this.props.onQuizeStatusChange("quizEnd");
 		}else{
