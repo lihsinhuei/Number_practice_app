@@ -27,6 +27,7 @@ class Result extends React.Component{
 		.then(respones => respones.json()) //response is a readableStream, so using .json() to formate it.
 		.then(data => {
 			console.log(data);
+			console.log("length2:",data.length);
 			this.setState({records:data});
 		})
 		.catch(error=>{
@@ -45,7 +46,9 @@ class Result extends React.Component{
 			for (let i = 0; i < this.state.records.length; i++) {
 				rows.push(<TableRow record={this.state.records[i]} key={this.state.records[i].question_no} blobURL={this.props.blobURLs[i]} />);
 			}
+			console.log("length:",this.state.records.length);
 			console.log(rows);
+			console.log("length3:",rows.length);
 			return(
 				<>
 

@@ -24,6 +24,7 @@ class Challenge extends React.Component {
 		}
 	}
 
+	//for sending to the display page
 	blobURLs=[];
 
 	componentDidMount(){
@@ -103,7 +104,7 @@ class Challenge extends React.Component {
 		//TBD: stop recording 
 		this.setState({isSkip:false});
 		//TBD: insert a new record to DB
-		
+		console.log("whichQuesion:",this.state.whichQuestion);
 		if(this.state.whichQuestion === 9){
 			//sending the callenge id to Result.js(sibling) through Home.js(parent)
 			this.props.searchRecords(this.state.challenge_id);
@@ -113,6 +114,7 @@ class Challenge extends React.Component {
 
 			//end the quiz
 			this.props.onQuizeStatusChange("quizEnd");
+			console.log("end quiz");
 		}else{
 			this.setState({whichQuestion:this.state.whichQuestion+1})
 			this.start();
@@ -148,10 +150,10 @@ class Challenge extends React.Component {
 	  .then(([buffer, blob]) => {
 
 	    const blobURL = URL.createObjectURL(blob)
-		console.log("let's look at the bloburl:",blobURL);
+
 		//push to the array, and send it to the display page later.
 		this.blobURLs.push(blobURL);
-		console.log(this.blobURLs);
+
 	    //using FormData to send the blob to server
 	     var fd = new FormData();
 		 const fileName = `${this.props.userID}_${this.state.challenge_id}_${this.state.whichQuestion}.mp3` 
@@ -162,18 +164,26 @@ class Challenge extends React.Component {
 		 fd.append("givenNumber",this.state.questionArray[this.state.whichQuestion]);
 		 fd.append("isSkip",this.state.isSkip);
 
-		fetch('http://localhost:3000/processUserRecording', {
-		    // headers: {'Content-Type': 'multipart/form-data; boundary=WebAppBoundary'},
-		    // while sending FormData object, the web AIP will automatically add the content-type as multipart/form-data. 
-		    method: "POST", 
-		    body: fd
-		});
+		async function processAudio(){
+			const response = await fetch('http://localhost:3000/processUserRecording', {
+				// headers: {'Content-Type': 'multipart/form-data; boundary=WebAppBoundary'},
+				// while sending FormData object, the web AIP will automatically add the content-type as multipart/form-data. 
+				method: "POST", 
+				body: fd
+			})
+			// const data = response.json();
+		}
+		processAudio()
+		.then(response=> {
+			this.sendAnswer();
+			this.setState({ blobURL, isRecording: false });
+		})
+	    
 
-	    this.setState({ blobURL, isRecording: false });
 	  })
 	  	.catch((e) => console.log(e));
 	  
-	  this.sendAnswer();
+
 
 	};
 
@@ -209,15 +219,6 @@ class Challenge extends React.Component {
 								id="recButton">
 							</button></div>
 						}
-
-{/*						<button onClick={this.start} disabled={this.state.isRecording}>
-						  Record
-						</button>
-						<button onClick={this.stop} disabled={!this.state.isRecording}>
-						  Stop
-						</button>
-						<audio src={this.state.blobURL} controls="controls" />*/}
-
 
 
 						<div className="center">

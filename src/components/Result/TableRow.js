@@ -3,8 +3,6 @@ import ReactDOM from 'react-dom/client';
 
 
 const TableRow = (props) =>{
-	console.log("here",props);
-	console.log("bloburl:",props.blobURL);
 
 	return(
 		    <tr>
@@ -12,7 +10,7 @@ const TableRow = (props) =>{
 		      <td>{props.record.given_number}</td>
 		      <td>{props.record.transcribe}</td>
 		      <td>
-				<audio src={props.blobURL} controls autoPlay/>
+				<audio src={props.blobURL} controls/>
 			  </td>
 			  <td>{props.record.is_correct}</td>
 		    </tr>
