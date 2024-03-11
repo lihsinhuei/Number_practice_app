@@ -1,4 +1,4 @@
-This repo is for the front-end. For the server, please check [Number_practice_API](https://github.com/lihsinhuei/Number_practise_api) 
+This repo is for the client side. For the server side, please check [Number_practice_API](https://github.com/lihsinhuei/Number_practise_api) 
 
 # Demo
 Hi, this is my personal project, and I work on both front-end and back-end.\
