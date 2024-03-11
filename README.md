@@ -1,6 +1,5 @@
-Hi, I am working on this personal project, including front-end and back-end. \
+Hi, I am working on this personal project, including front-end and back-end.\
 Because I haven't deployed it yet, I made this short video to demonstrate what this app can do for you to quickly grasp it.\
-
 This repo is for the front-end. For the server, please check [Number_practice_API](https://github.com/lihsinhuei/Number_practise_api) 
 
 https://github.com/lihsinhuei/Number_practise_app/assets/34786915/45452145-562b-43f8-886a-894556fc1cbe
