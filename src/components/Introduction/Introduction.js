@@ -8,14 +8,19 @@ const Introduction = (props)=>{
 
 	return(
 		<div className="nomalContainer">
-				<p> Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-						tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-						quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-						consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
-						cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
-						proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+			<h1>Number Challenge</h1>
+				<p className="pLeft">	Learning a new language can be tough, right? Especially when it comes to numbers! <br />
+					Even though we can count in English, reading numbers randomly can be tricky. That's where this app jumps in to help!<br />
+					<br />
+					<b> Here's how this app works:</b> <br />
+					1. You'll face 10 numbers challenges, popping up one after another. <br />
+					2. Your job? Speak each number clearly and hit the red button to send your voice.<br />
+					3. repeat the last step until the challenge ends. <br />
+					4. Review your results and listen to your recordings to improve your skills <br />
+					<br />
+					Just squeeze in some practice time whenever you can, and boom! You'll notice your speaking skills getting sharper day by day. Easy peasy!
 				</p>
-			<p >Ready to start the challenge?</p>
+			<p className="pLeft">Ready to start the challenge?</p>
 			<div className="center" >
 				<button className=" mainButton" onClick={()=>props.onQuizeStatusChange("inProgress")}  type="start">start</button>
 			</div>

@@ -16,18 +16,29 @@ class SignUp extends React.Component{
 		const email = event.target.email.value;
 		const password = event.target.password.value;
 		if(username!='' && email!='' && password!=''){
-			console.log("all filled!")
-			fetch('http://localhost:3000/signup', {
-				headers:{'Content-Type': 'application/json'},
-				method:"POST",
-				body:JSON.stringify({
-					username:username,
-					email:email,
-					password:password
+			console.log("before call signup");
+
+			async function signup(){
+				const response = await fetch('http://localhost:3000/signup', {
+					headers:{'Content-Type': 'application/json'},
+					method:"POST",
+					body:JSON.stringify({
+						username:username,
+						email:email,
+						password:password
+					})
 				})
-			})
-			 .then(response => response.json())
+
+				return response;
+			}
+			
+			signup()
+			 .then(response => {
+				console.log("got the response from signup");
+				response.json();
+			 })
 			 .then(user => {
+				console.log("gonna change route");
 			 	this.props.onRouteChange("home");
 				this.props.loadUser(user.user_id,user.username);		
 			 })

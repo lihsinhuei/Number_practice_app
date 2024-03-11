@@ -1,7 +1,7 @@
 
 
 .nomalContainer {
-	width: 80%;
+	width: 60%;
 	margin: 0 auto;
 	display: block;
 	padding: 20px;
@@ -10,6 +10,10 @@
 
 p {
     text-align: center;
+}
+
+.pLeft {
+  text-align: left;
 }
 
 .center {
