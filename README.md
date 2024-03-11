@@ -1,8 +1,8 @@
 This repo is for the client side. For the server side, please check [Number_practice_API](https://github.com/lihsinhuei/Number_practise_api) 
 
 # Demo
-Hi, this is my personal project, and I work on both front-end and back-end.\
-Because it hasn't been deployed yet, I made this short video to demonstrate what this app can do for you to quickly grasp it.\
+Hi, this is my personal project, and I am working on both front-end and back-end.\
+Because it hasn't been done and deployed yet, I made this short video to demonstrate what this app can do for you to quickly grasp it.\
 
 https://github.com/lihsinhuei/Number_practise_app/assets/34786915/45452145-562b-43f8-886a-894556fc1cbe
 
