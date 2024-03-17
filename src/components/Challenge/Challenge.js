@@ -1,5 +1,4 @@
 import React from 'react';
-import ReactDOM from 'react-dom/client';
 import "./Challenge.css";
 import MicRecorder from 'mic-recorder-to-mp3';
 
@@ -44,9 +43,9 @@ class Challenge extends React.Component {
 			console.log("failed to create a new challenge",error)
 		})
 
-		// Create 10 numbers for this challenge
-		for(let i=0 ; i<10 ; i++){
-			let opt = Math.floor(Math.random()*100);
+		// Create quizs for this challenge
+		for(let i=0 ; i<this.props.totalQuiz.value ; i++){
+			let opt = Math.floor(Math.random()* Math.pow(10,this.props.maxDigit.value));
 			this.state.questionArray.push(opt);
 		}
 		console.log(this.state.questionArray);
@@ -77,7 +76,7 @@ class Challenge extends React.Component {
 		//TBD: insert a new record to DB
 		var fd = new FormData();
 		fd.append("challengeID",this.state.challenge_id);
-		fd.append("questionNo",this.state.whichQuestion);
+		fd.append("quizNo",this.state.whichQuestion);
 		fd.append("givenNumber",this.state.questionArray[this.state.whichQuestion]);
 
 		fetch('http://localhost:3000/skipQuestion',{
@@ -91,7 +90,7 @@ class Challenge extends React.Component {
 
 
 
-		if(this.state.whichQuestion === 9){
+		if(this.state.whichQuestion === this.props.totalQuiz.value-1){
 			//end the quiz
 			this.props.onQuizeStatusChange("quizEnd");
 		}else{
@@ -105,7 +104,7 @@ class Challenge extends React.Component {
 		this.setState({isSkip:false});
 		//TBD: insert a new record to DB
 		console.log("whichQuesion:",this.state.whichQuestion);
-		if(this.state.whichQuestion === 9){
+		if(this.state.whichQuestion === this.props.totalQuiz.value-1){
 			//sending the callenge id to Result.js(sibling) through Home.js(parent)
 			this.props.searchRecords(this.state.challenge_id);
 			
@@ -160,7 +159,7 @@ class Challenge extends React.Component {
 		 console.log(fileName);
 	     fd.append("blob",blob, fileName);
 		 fd.append("challengeID",this.state.challenge_id);
-		 fd.append("questionNo",this.state.whichQuestion);
+		 fd.append("quizNo",this.state.whichQuestion);
 		 fd.append("givenNumber",this.state.questionArray[this.state.whichQuestion]);
 		 fd.append("isSkip",this.state.isSkip);
 
@@ -195,10 +194,10 @@ class Challenge extends React.Component {
 				<div>preparing the text....</div>
 			)
 		}else{
-			while(this.state.whichQuestion <10){
+			while(this.state.whichQuestion < this.props.totalQuiz.value){
 				return(
 					<>
-						<p>Quiz no.{this.state.whichQuestion+1}  (total 10 quizzes)</p>
+						<p>Quiz no.{this.state.whichQuestion+1}  (total {this.props.totalQuiz.value} quizzes)</p>
 						<div className="quizNumberDiv">
 							<p>{this.state.questionArray[this.state.whichQuestion]}</p>
 						</div>

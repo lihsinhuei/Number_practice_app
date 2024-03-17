@@ -1,5 +1,4 @@
 import React from 'react';
-import ReactDOM from 'react-dom/client';
 import Introduction from "./Introduction/Introduction.js";
 import Challenge from "./Challenge/Challenge.js";
 import Result from "./Result/Result.js";
@@ -11,6 +10,8 @@ class Home extends React.Component{
 		this.state = {
 			quizeStatus:"notStart", //notStart(default) / inProgress/ quizEnd
 			userName:'',
+			maxDigit:2,	//defualt max number is 99
+			totalQuiz:5, //defual 5 questions for each challenge
 			blobURLs:[],
 			challengeIDForSearching:"" //will be passing to the Result.js component to search the records from DB
 		}
@@ -21,6 +22,14 @@ class Home extends React.Component{
 
 	onQuizeStatusChange = (status)=>{
 		this.setState({quizeStatus:status});
+	}
+
+	onQuizeStatusChangeFromIntro = (status, maxDigit,totalQuiz )=>{
+		this.setState({
+			quizeStatus:status,
+			maxDigit:maxDigit,
+			totalQuiz:totalQuiz
+		});
 	}
 
 
@@ -41,9 +50,9 @@ class Home extends React.Component{
 		return(
 			<>
 				{this.state.quizeStatus == "notStart" 
-					? <Introduction onQuizeStatusChange={this.onQuizeStatusChange}/> 
+					? <Introduction onQuizeStatusChangeFromIntro={this.onQuizeStatusChangeFromIntro}/> 
 					: (this.state.quizeStatus=="inProgress"
-						? <Challenge userID={this.props.userID} onQuizeStatusChange={this.onQuizeStatusChange} saveBlobs={this.saveBlobs} searchRecords={this.searchRecords}/> 
+						? <Challenge userID={this.props.userID} totalQuiz={this.state.totalQuiz} maxDigit={this.state.maxDigit} onQuizeStatusChange={this.onQuizeStatusChange} saveBlobs={this.saveBlobs} searchRecords={this.searchRecords}/> 
 						: <Result theChallengeID={this.state.challengeIDForSearching} blobURLs={this.state.blobURLs} onQuizeStatusChange={this.onQuizeStatusChange} />
 					   )
 				}

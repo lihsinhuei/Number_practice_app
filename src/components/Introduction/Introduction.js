@@ -1,10 +1,33 @@
 import React from 'react';
-import ReactDOM from 'react-dom/client';
 import './Introduction.css';
-
-
+import MyDropdown from './MyDropdown';
 
 const Introduction = (props)=>{
+
+	const totalQuizOptions=[
+		{ value: 5, label: '5' },
+		{ value: 10, label: '10' },
+		{ value: 15, label: '15' },
+		{ value: 20, label: '20' },
+	]
+
+	const digitOptions=[
+		{ value: 2, label: '2' },
+		{ value: 3, label: '3' },
+		{ value: 4, label: '4' },
+		{ value: 5, label: '5' },
+	];
+
+	var totalQuiz={ value: 5, label: '5' };
+	var maxDigit={ value: 2, label: '2' };
+
+	function setDigit(userSelected){
+		maxDigit=userSelected;
+	}
+
+	function setTotalQuiz(userSelected){
+		totalQuiz=userSelected;
+	}
 
 	return(
 		<div className="nomalContainer">
@@ -21,8 +44,16 @@ const Introduction = (props)=>{
 					Just squeeze in some practice time whenever you can, and boom! You'll notice your speaking skills getting sharper day by day. Easy peasy!
 				</p>
 			<p className="pLeft">Ready to start the challenge?</p>
+			<div>
+				<p>How many quizs:</p>
+				<MyDropdown handleSelect={setTotalQuiz} options={totalQuizOptions} dropdownTitle={"How many quizs"}/>		
+			</div>
+			<div>
+				<p>Select maximum digits:</p>
+				<MyDropdown handleSelect={setDigit} options={digitOptions} dropdownTitle={"select the maximum digit"}/>
+			</div>
 			<div className="center" >
-				<button className=" mainButton" onClick={()=>props.onQuizeStatusChange("inProgress")}  type="start">start</button>
+				<button className=" mainButton" onClick={()=>props.onQuizeStatusChangeFromIntro("inProgress",maxDigit,totalQuiz)}  type="start">start</button>
 			</div>
 
 		</div>
