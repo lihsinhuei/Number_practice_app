@@ -1,6 +1,7 @@
 import React from 'react';
 import "./Challenge.css";
 import MicRecorder from 'mic-recorder-to-mp3';
+import Countdown from "./Countdown.js";
 
 
 //set the bit rate for the audio to be recorded to 128 bits
@@ -20,6 +21,9 @@ class Challenge extends React.Component {
 			isRecording: false,
 			blobURL: '',
 			isBlocked: false,
+
+			countdownMounted: true,//countdowntest
+
 		}
 	}
 
@@ -27,6 +31,7 @@ class Challenge extends React.Component {
 	blobURLs=[];
 
 	componentDidMount(){
+
 		// Create a new challenge
 		fetch('http://localhost:3000/newChallenge',{
 			headers:{'Content-Type': 'application/json'},
@@ -48,7 +53,7 @@ class Challenge extends React.Component {
 			let opt = Math.floor(Math.random()* Math.pow(10,this.props.maxDigit.value));
 			this.state.questionArray.push(opt);
 		}
-		console.log(this.state.questionArray);
+		console.log("quizs array:",this.state.questionArray);
 
 
 		// check if the permission for the microphone is allowed in the browser.
@@ -70,10 +75,9 @@ class Challenge extends React.Component {
 
 
 	skipAQuestion(){
-		//TBD: stop recording 
 		this.setState({isSkip:true});
 
-		//TBD: insert a new record to DB
+		//insert a new record to DB
 		var fd = new FormData();
 		fd.append("challengeID",this.state.challenge_id);
 		fd.append("quizNo",this.state.whichQuestion);
@@ -100,9 +104,8 @@ class Challenge extends React.Component {
 	}
 
 	sendAnswer(){
-		//TBD: stop recording 
 		this.setState({isSkip:false});
-		//TBD: insert a new record to DB
+
 		console.log("whichQuesion:",this.state.whichQuestion);
 		if(this.state.whichQuestion === this.props.totalQuiz.value-1){
 			//sending the callenge id to Result.js(sibling) through Home.js(parent)
@@ -118,7 +121,6 @@ class Challenge extends React.Component {
 			this.setState({whichQuestion:this.state.whichQuestion+1})
 			this.start();
 		}
-
 	}
 
 	exitQuiz(){
@@ -143,14 +145,17 @@ class Challenge extends React.Component {
 
 	//mic-recorder-to-mp3 audio stop recording and then sending the answer. 
 	stop = () => {
+	console.log("in stop()");
+	//to unmount the Countdown component
+	this.setState({ countdownMounted: false }); 
+	
 	Mp3Recorder
 	  .stop()
 	  .getMp3()
 	  .then(([buffer, blob]) => {
 
-	    const blobURL = URL.createObjectURL(blob)
-
-		//push to the array, and send it to the display page later.
+	    //create a blobURL,and push to the blobURLs array, which will be used in the display page, so users can play their recordings.
+		const blobURL = URL.createObjectURL(blob)
 		this.blobURLs.push(blobURL);
 
 	    //using FormData to send the blob to server
@@ -166,24 +171,21 @@ class Challenge extends React.Component {
 
 		async function processAudio(){
 			const response = await fetch('http://localhost:3000/processUserRecording', {
-				// headers: {'Content-Type': 'multipart/form-data; boundary=WebAppBoundary'},
 				// while sending FormData object, the web AIP will automatically add the content-type as multipart/form-data. 
 				method: "POST", 
 				body: fd
 			})
-			// const data = response.json();
 		}
 		processAudio()
 		.then(response=> {
 			this.sendAnswer();
-			this.setState({ blobURL, isRecording: false });
+			this.setState({ blobURL:"", isRecording: false,countdownMounted:true });
 		})
 	    
 
 	  })
 	  	.catch((e) => console.log(e));
 	  
-
 
 	};
 
@@ -203,28 +205,39 @@ class Challenge extends React.Component {
 						</div>
 						<img />
 
-						<p>Click the button to stop recording and send</p>
-						
+
 						{this.state.isRecording 
 							?  
-							<div className="center"><button 
-								onClick={()=> this.stop()}
-								className="recordButton Rec" 
-								id="recButton">
-							</button></div>
+							<div >
+								<div>
+									{this.state.countdownMounted && <Countdown stop={this.stop} whichQuestion={this.state.whichQuestion}/>} 
+								</div>
+								<div>
+									<p>Hit the red button to send your recording</p>
+								</div>
+								<div className="center">
+									<button 
+										onClick={()=> this.stop()}
+										className="recordButton Rec" 
+										id="recButton">
+									</button>
+								</div>
+							</div>
 							:
-							<div className="center"><button 
-								onClick={()=> this.start()}
-								className="recordButton notRec" 
-								id="recButton">
-							</button></div>
+							<div className="center">
+								<button 
+									onClick={()=> this.start()}
+									className="recordButton notRec" 
+									id="recButton">
+								</button>
+							</div>
 						}
 
 
-						<div className="center">
+						{/* <div className="center">
 							<button className=" mainButton" onClick={()=>this.skipAQuestion()}  type="skip">Skip</button>
 							<button className=" mainButton" onClick={()=>this.exitQuiz()}  type="send">Exit</button>
-						</div>
+						</div> */}
 					</>
 				)
 			}	

@@ -32,10 +32,7 @@ class SignUp extends React.Component{
 			}
 			
 			signup()
-			 .then(response => {
-				console.log("got the response from signup");
-				response.json();
-			 })
+			 .then(response => response.json())
 			 .then(user => {
 				console.log("gonna change route");
 			 	this.props.onRouteChange("home");
