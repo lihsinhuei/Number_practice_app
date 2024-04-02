@@ -33,7 +33,7 @@ class Challenge extends React.Component {
 	componentDidMount(){
 
 		// Create a new challenge
-		fetch('http://localhost:3000/newChallenge',{
+		fetch('http://localhost:8080/newChallenge',{
 			headers:{'Content-Type': 'application/json'},
 			body:JSON.stringify({
 					userID:this.props.userID,
@@ -74,35 +74,6 @@ class Challenge extends React.Component {
 	}
 
 
-	skipAQuestion(){
-		this.setState({isSkip:true});
-
-		//insert a new record to DB
-		var fd = new FormData();
-		fd.append("challengeID",this.state.challenge_id);
-		fd.append("quizNo",this.state.whichQuestion);
-		fd.append("givenNumber",this.state.questionArray[this.state.whichQuestion]);
-
-		fetch('http://localhost:3000/skipQuestion',{
-			body:fd,
-			method: "POST"
-		})
-		.then(console.log("Skipped"))
-		.catch(error=>{
-			console.log("failed to skip the question",error)
-		})
-
-
-
-		if(this.state.whichQuestion === this.props.totalQuiz.value-1){
-			//end the quiz
-			this.props.onQuizeStatusChange("quizEnd");
-		}else{
-			this.setState({isSkip:false});
-			this.setState({whichQuestion:this.state.whichQuestion+1})
-		}
-	}
-
 	sendAnswer(){
 		this.setState({isSkip:false});
 
@@ -123,12 +94,6 @@ class Challenge extends React.Component {
 		}
 	}
 
-	exitQuiz(){
-		//TBD: stop recording 
-		this.setState({isSkip:true});
-		//TBD: insert records of the rest questions to DB
-		this.props.onQuizeStatusChange("quizEnd");
-	}
 
 	//mic-recorder-to-mp3 audio recording 
 	start = () => {
@@ -170,7 +135,7 @@ class Challenge extends React.Component {
 
 
 		async function processAudio(){
-			const response = await fetch('http://localhost:3000/processUserRecording', {
+			const response = await fetch('http://localhost:8080/processUserRecording', {
 				// while sending FormData object, the web AIP will automatically add the content-type as multipart/form-data. 
 				method: "POST", 
 				body: fd

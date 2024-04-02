@@ -19,12 +19,13 @@ class SignIn extends React.Component {
 		const password = event.target.password.value;
 		if(email!='' && password!=''){
 			async function logIn(){
-				const response =await fetch("http://localhost:3000/signin",{
+				const response =await fetch("http://localhost:8080/signin",{
 					headers:{'Content-Type': 'application/json'},
 					body:JSON.stringify({
 						email:email,
 						password:password
 					}),
+					credentials: "include",
 					method:'POST'
 				});
 

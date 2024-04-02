@@ -18,7 +18,7 @@ class SignUp extends React.Component{
 			console.log("before call signup");
 
 			async function signup(){
-				const response = await fetch('http://localhost:3000/signup', {
+				const response = await fetch('http://localhost:8080/signup', {
 					headers:{'Content-Type': 'application/json'},
 					method:"POST",
 					body:JSON.stringify({

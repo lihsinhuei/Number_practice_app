@@ -16,7 +16,7 @@ class Result extends React.Component{
 	componentDidMount(){
 		//fetch records from DB
 		console.log("Challenge ID:",this.props.theChallengeID);
-		fetch('http://localhost:3000/getRecord',{
+		fetch('http://localhost:8080/getRecord',{
 			headers:{'Content-Type': 'application/json'},
 			body:JSON.stringify({
 				challengeID:this.props.theChallengeID

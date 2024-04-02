@@ -4,19 +4,31 @@ import logo from './logo.png';
 
 const Navigation = (props)=>{
 
+
+	const clearSessionAndSignOut = () =>{
+		async function logOut(){
+			const response = await fetch("http://localhost:8080/logout",{
+				headers:{'Content-Type': 'application/json'},
+				credentials: 'include',
+				method:'POST'
+			});
+			return response;
+		}
+		
+		logOut()
+		 .then(response =>{
+			if(response.ok)
+				props.onRouteChange("signIn");
+			else
+				throw new Error('log out api failed');
+		 })
+		 .catch((err)=>console.log("clearSessionAndSignOut failed:",err))
+
+	}
+		
+
 		if(!props.isLogIn){
 			return(
-				// <nav className="container">
-				// 		<div className = "col-sm-10" >
-				// 		    <a className="navbar-brand" href="#">
-				// 		    	<img src={logo} alt="Logo" width="30" height="24" className="d-inline-block align-text-top" />
-				// 		    </a>
-				// 	    </div>
-				// 	    <ul className = "col-sm-2" >
-				// 			<li onClick={()=>props.onRouteChange("signIn")} > Sign in</li>
-				// 			<li onClick={()=>props.onRouteChange("signUp")} > Sign up</li> 
-				// 		</ul>  
-				// </nav>
 
 				<div className="navbar">
 					<a href="#" className="navbar-brand"><img src={logo} alt="Logo"/></a>
@@ -28,22 +40,11 @@ const Navigation = (props)=>{
 			)
 		}else{
 			return(
-				// <nav className="container">
-				// 		<div className = "col-sm-10" >
-				// 		    <a className="navbar-brand" href="#">
-				// 		    	<img src={logo} alt="Logo" width="30" height="24" className="d-inline-block align-text-top" />
-				// 		    </a>
-				// 	    </div>
-				// 	    <ul className = "col-sm-2">
-				// 			<li >{props.username+""}</li>
-				// 			<li onClick={()=>props.onRouteChange("signIn")} >signout</li> 
-				// 		</ul>       
-				// </nav>
 				<div className="navbar">
 					<a href="#" className="navbar-brand"><img src={logo} alt="Logo"/></a>
 					<div className="navbar-right">
 						<a href="#">{props.username+""}</a>
-						<a href="#" onClick={()=>props.onRouteChange("signIn")}>Sign Out</a>
+						<a href="#" onClick={()=>clearSessionAndSignOut()}>Sign Out</a>
 					</div>
 				</div>
 			)
