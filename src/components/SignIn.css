@@ -34,3 +34,7 @@ body {
   border-top-right-radius: 0;
 }
 
+.flashMessage{
+  color:red;
+  font-size: small;
+}

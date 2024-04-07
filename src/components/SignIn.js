@@ -1,5 +1,4 @@
 import React from 'react';
-// import ReactDOM from 'react-dom/client';
 import './SignIn.css';
 
 
@@ -7,13 +6,13 @@ class SignIn extends React.Component {
 
 	constructor(props) {
 	    super(props);
+		this.state = {
+		    flashMessage: null,
+		}
 	}
 
 	//fetch user data from DB, if valid, rerender to home page, if not,stay in the login page.
 	onSubmitSignIn = (event)=>{
-
-		// this.props.onRouteChange("home");//for testing 
-		// this.props.loadUser(1,"Hsin");//for testing 
 
 		const email = event.target.email.value;
 		const password = event.target.password.value;
@@ -33,12 +32,19 @@ class SignIn extends React.Component {
 
 			}
 			logIn()
-			 .then(response => response.json())
-			 .then(user =>{
-			 	this.props.onRouteChange("home");
-				this.props.loadUser(user.user_id,user.username);
-			 })
-			 .catch(()=>console.log("Wrong email or password"))
+			.then(response => Promise.all([response.status,response.json()]))
+			.then(([httpStatus,user]) => {
+			   if(httpStatus==200){
+				   console.log("gonna change route");
+				   this.props.onRouteChange("home");
+				  this.props.loadUser(user.user_id,user.username);	
+			   }else{
+				   this.setState({flashMessage:user.message});
+			   }
+	   
+			})
+			.catch(()=>console.log("something went wrong while logging in"))
+
 		}
 	}
 
@@ -65,12 +71,16 @@ class SignIn extends React.Component {
 				      />
 				      <label htmlFor="floatingPassword">Password</label>
 				    </div>
+					<div>
+						{this.state.flashMessage != null && 
+							<div className="flashMessage">{this.state.flashMessage}</div> }
+					</div>
 
-				    <div className="checkbox mb-3">
+				    {/* <div className="checkbox mb-3">
 				      <label>
 				        <input type="checkbox" value="remember-me" /> Remember me
 				      </label>
-				    </div>
+				    </div> */}
 				    <button className="w-100 btn btn-lg btn-primary" type="submit">Sign in</button>
 				  </form>
 				</main>

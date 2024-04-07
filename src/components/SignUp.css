@@ -28,7 +28,7 @@ body {
   border-bottom-left-radius: 0;
 }
 
-.form-signin input[type="signUpEmail"] {
+.form-signin input[type="email"] {
   margin-bottom: -1px;
   border-top-right-radius: 0;
   border-top-left-radius: 0;
@@ -42,3 +42,7 @@ body {
   border-top-right-radius: 0;
 }
 
+.flashMessage{
+  color:red;
+  font-size: small;
+}

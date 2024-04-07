@@ -6,6 +6,9 @@ class SignUp extends React.Component{
 
 	constructor(props){
 		super(props);
+		this.state = {
+		    flashMessage: null,
+		}
 
 	}
 
@@ -25,25 +28,34 @@ class SignUp extends React.Component{
 						username:username,
 						email:email,
 						password:password
-					})
+					}),
+					credentials: "include"
 				})
 
 				return response;
 			}
 			
 			signup()
-			 .then(response => response.json())
-			 .then(user => {
-				console.log("gonna change route");
-			 	this.props.onRouteChange("home");
-				this.props.loadUser(user.user_id,user.username);		
+			 .then(response => Promise.all([response.status,response.json()]))
+			 .then(([httpStatus,user]) => {
+				if(httpStatus==200){
+					console.log("gonna change route");
+					this.props.onRouteChange("home");
+				   this.props.loadUser(user.user_id,user.username);	
+				}else{
+					this.setState({flashMessage:user.message});
+				}
+		
 			 })
+			  .catch(()=>console.log("something went wrong while signing up"))
 
 		}else{
-			console.log("please fill out all field")
+			console.log("please fill out all field");
 		}
 
 	}
+
+
 
 
 	render(){
@@ -57,19 +69,28 @@ class SignUp extends React.Component{
 				      <label htmlFor="floatingInput">Name</label>
 				    </div>
 				    <div className="form-floating">
-				      <input type="signUpEmail" className="form-control" id="email" placeholder="name@example.com" />
+				      <input type="email" className="form-control" id="email" placeholder="name@example.com" />
 				      <label htmlFor="floatingInput">Email address</label>
 				    </div>
 				    <div className="form-floating">
 				      <input type="password" className="form-control" id="password" placeholder="Password" />
 				      <label htmlFor="floatingPassword">Password</label>
 				    </div>
+					{/* <div>eee</div> */}
+					<div>
+						{this.state.flashMessage != null && 
+							<div className="flashMessage">{this.state.flashMessage}</div> }
+					</div>
+{/* 
+					<div>
+						{this.message.length >0 && this.message}
+					</div> */}
 
-				    <div className="checkbox mb-3">
+				    {/* <div className="checkbox mb-3">
 				      <label>
 				        <input type="checkbox" value="remember-me" /> Remember me
 				      </label>
-				    </div>
+				    </div> */}
 				    <button className="w-100 btn btn-lg btn-primary" type="submit">Register</button>
 				  </form>
 				</main>
