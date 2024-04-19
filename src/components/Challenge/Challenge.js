@@ -33,7 +33,7 @@ class Challenge extends React.Component {
 	componentDidMount(){
 
 		// Create a new challenge
-		fetch('http://localhost:8080/newChallenge',{
+		fetch(process.env.REACT_APP_API_DOMAIN+'newChallenge',{
 			headers:{'Content-Type': 'application/json'},
 			body:JSON.stringify({
 					userID:this.props.userID,
@@ -135,7 +135,7 @@ class Challenge extends React.Component {
 
 
 		async function processAudio(){
-			const response = await fetch('http://localhost:8080/processUserRecording', {
+			const response = await fetch(process.env.REACT_APP_API_DOMAIN+'processUserRecording', {
 				// while sending FormData object, the web AIP will automatically add the content-type as multipart/form-data. 
 				method: "POST", 
 				body: fd

@@ -6,6 +6,7 @@ import SignUp from "./components/SignUp.js";
 import Home from "./components/Home.js";
 
 
+
 class App extends React.Component{
 
 	constructor(){
@@ -50,9 +51,10 @@ class App extends React.Component{
 
 	//check authentication(session and cookies)
 	componentDidMount(){ 
+		console.log("REACT_APP_API_DOMAIN:",process.env.REACT_APP_API_DOMAIN);
 		if(!this.state.authUser){
 			async function checkSession(){
-				const response = await fetch("http://localhost:8080/",{
+				const response = await fetch(process.env.REACT_APP_API_DOMAIN,{
 					credentials: "include",
 					method:'GET'
 				});

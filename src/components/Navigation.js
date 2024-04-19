@@ -7,7 +7,7 @@ const Navigation = (props)=>{
 
 	const clearSessionAndSignOut = () =>{
 		async function logOut(){
-			const response = await fetch("http://localhost:8080/logout",{
+			const response = await fetch(process.env.REACT_APP_API_DOMAIN+'logout',{
 				headers:{'Content-Type': 'application/json'},
 				credentials: 'include',
 				method:'POST'
